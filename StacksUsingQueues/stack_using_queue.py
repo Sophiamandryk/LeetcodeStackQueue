@@ -1,44 +1,35 @@
-from collections import deque
-
-class MyStack(object):
+class MyQueue(object):
 
     def __init__(self):
-        self.queue1 = deque()
-        self.queue2 = deque()
+        self.stack1 = []
+        self.stack2 = []
 
     def push(self, x):
         """
-        Push element x onto stack.
+        Push element x to the back of queue.
         """
-        self.queue1.append(x)
+        self.stack1.append(x)
 
     def pop(self):
         """
-        Removes the element on the top of the stack and returns it.
+        Removes the element from the front of the queue and returns it.
         """
-        while len(self.queue1) > 1:
-            self.queue2.append(self.queue1.popleft())
-        popped_element = self.queue1.popleft()
-        self.queue1, self.queue2 = self.queue2, self.queue1
-        
-        return popped_element
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2.pop() if self.stack2 else None
 
-    def top(self):
+    def peek(self):
         """
-        Get the top element.
+        Get the front element.
         """
-        while len(self.queue1) > 1:
-            self.queue2.append(self.queue1.popleft())
-        
-        top_element = self.queue1[0]
-        self.queue2.append(self.queue1.popleft())
-
-        self.queue1, self.queue2 = self.queue2, self.queue1
-        
-        return top_element
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2[-1] if self.stack2 else None
 
     def empty(self):
         """
-        Returns whether the stack is empty.
+        Returns whether the queue is empty.
         """
-        return len(self.queue1) == 0
+        return not self.stack1 and not self.stack2
